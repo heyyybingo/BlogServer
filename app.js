@@ -12,17 +12,17 @@ const managerRouter = require("./Router/managerRouter");
 const tagsRouter = require("./Router/tagsRouter")
 const bodyParser = require('body-parser')
 const init = require("./init")
-app.use("*", function (req, res, next) {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-    res.header('Access-Control-Allow-Credentials', 'true')
-    if (req.method === 'OPTIONS') {
-        res.send(200)
-    } else {
-        next()
-    }
-});
+// app.use("*", function (req, res, next) {
+//     res.header('Access-Control-Allow-Origin', '*');
+//     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+//     res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+//     res.header('Access-Control-Allow-Credentials', 'true')
+//     if (req.method === 'OPTIONS') {
+//         res.send(200)
+//     } else {
+//         next()
+//     }
+// });
 
 app.use(bodyParser.json()); // 添加json解析
 app.use(bodyParser.urlencoded({
