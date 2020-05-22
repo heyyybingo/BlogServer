@@ -36,6 +36,19 @@ class managerDao extends BaseDao {
             console.log(err)
         }
     }
+    findByName(obj) {
+        try {
+            let userName = obj.getUserName();
+
+            // console.log(userName, password)
+            return this.model.find({
+                userName
+            })
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
 }
 
 module.exports = managerDao

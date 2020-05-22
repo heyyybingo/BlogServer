@@ -11,7 +11,7 @@ const articleRouter = require("./Router/articleRouter");
 const managerRouter = require("./Router/managerRouter");
 const tagsRouter = require("./Router/tagsRouter")
 const bodyParser = require('body-parser')
-
+const init = require("./init")
 app.use("*", function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
@@ -68,4 +68,8 @@ app.use("/tags", tagsRouter)
 
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}!`);
+
+    init();
+})

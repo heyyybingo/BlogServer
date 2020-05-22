@@ -16,12 +16,14 @@ mongoClient.on('connected', function () {
  */
 mongoClient.on('error', function (err) {
    console.log('Mongoose connection error: ' + err);
+   throw err;
 });
 /**
  * Mongo 关闭连接回调
  */
 mongoClient.on('disconnected', function () {
    console.log('Mongoose disconnected');
+   throw 'Mongoose disconnected';
 });
 
 
