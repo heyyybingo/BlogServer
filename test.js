@@ -1,6 +1,6 @@
-let content = "<sadasdadad>sadassdasdwqqdqw>qdqweqw"
+let pt = /^(?!\/account)/
+let url = "/account/sssss"
 
-let simpleContent = content.slice(0, content.lastIndexOf(">", 150) + 1);
-let result = simpleContent.replace(/<[^>]+>/g, "")
+let result = url.search(pt, url)
 
 console.log(result)

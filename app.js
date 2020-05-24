@@ -30,9 +30,12 @@ app.use(bodyParser.urlencoded({
 }));
 
 //非登录需要进行token验证
-app.post(/\/(?!login).*/, function (req, res, next) {
+app.post(/^(?!\/account)/, function (req, res, next) {
     // console.log(req)
     try {
+        if (!req.headers['authorization']) {
+            throw "error"
+        }
         let authorization = req.headers['authorization'].split(" ");
 
         if (authorization[0] != "Bearer") {
