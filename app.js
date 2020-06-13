@@ -10,7 +10,12 @@ const loginRouter = require("./Router/loginRouter")
 const articleRouter = require("./Router/articleRouter");
 const managerRouter = require("./Router/managerRouter");
 const tagsRouter = require("./Router/tagsRouter")
+const comRepRouter = require("./Router/comRepRouter")
+const userRouter = require("./Router/userRouter")
+const messageBoardRouter = require("./Router/messageBoardRouter")
 const bodyParser = require('body-parser')
+const session = require('express-session')
+
 const init = require("./init")
 // app.use("*", function (req, res, next) {
 //     res.header('Access-Control-Allow-Origin', '*');
@@ -28,7 +33,16 @@ app.use(bodyParser.json()); // 添加json解析
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-
+app.use(session({
+    secret: 'heyyybingo',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        maxAge: 60 * 60 * 12,
+        httpOnly: true
+    }
+}))
 //非登录需要进行token验证
 app.post(/^(?!\/account)/, function (req, res, next) {
     // console.log(req)
@@ -68,8 +82,9 @@ app.use("/", loginRouter)
 app.use("/article", articleRouter)
 app.use("/manager", managerRouter)
 app.use("/tags", tagsRouter)
-
-
+app.use("/comRep", comRepRouter)
+app.use("/user", userRouter)
+app.use("/messageBoard", messageBoardRouter)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}!`);

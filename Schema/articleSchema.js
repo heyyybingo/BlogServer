@@ -13,9 +13,10 @@ let articleSchema = new Schema({
         type: String,
         required: true
     }, //文章内容
-    authorId: {
-        type: String,
-        required: true
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        require: true
     }, //作者
     createTime: {
         type: Date,

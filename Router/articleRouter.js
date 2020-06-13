@@ -78,31 +78,68 @@ articleRouter.get("/query", (req, res) => {
     let adao = new articleDao();
     adao.findById(article).then(result => {
         console.log(result)
+        if (!result) {
+            throw 1;
+        }
         res.status(200).send({
             state: "success",
             data: result
         })
     }).catch(err => {
         console.log(err)
+        if (err == 1) {
+            res.status(404).send()
+            return;
+        }
         res.status(500).send()
     })
 })
 
+articleRouter.get("/querySimple", (req, res) => {
+    let articleId = req.query._id;
+
+    // 创建文章实例
+    let article = new Article();
+
+    article.setId(articleId);
+
+    //创建dao对象
+    let adao = new articleDao();
+    adao.findSimpleById(article).then(result => {
+        console.log(result)
+        if (!result) {
+            throw 1;
+        }
+        res.status(200).send({
+            state: "success",
+            data: result
+        })
+    }).catch(err => {
+        console.log(err)
+        if (err == 1) {
+            res.status(404).send()
+            return;
+        }
+        res.status(500).send()
+    })
+})
 /**
  * 创建文章 
  */
 articleRouter.post("/create", (req, res) => {
     let title = req.body.title;
+    let simpleContent = req.body.simpleContent;
     let content = req.body.content;
-    let authorId = req.User._id;
+    let author = req.User._id;
     let createTime = Date.now();
     let lastUpdateTime = createTime
     let tags = req.body.tags;
 
     // 创建文章实例
     let article = new Article()
-    article.setAuthorId(authorId);
+    article.setAuthor(author);
     article.setTitle(title);
+    article.setSimpleContent(simpleContent)
     article.setContent(content);
     article.setCreateTime(createTime);
     article.setLastUpdateTime(lastUpdateTime)

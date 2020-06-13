@@ -10,14 +10,23 @@ let userSchema = new Schema({
         type: String,
         required: true
     },
-    github: {
-        type: String,
-        required: false,
-        default: null
+    // github: {
+    //     type: String,
+    //     required: false,
+    //     default: null
+    // },
+
+    role: {
+        type: Number,
+        default: 0
+    },
+    state: {
+        type: Boolean,
+        default: true
     },
     email: {
         type: String,
-        required: false,
+        required: true,
         default: null
     },
     registerTime: {

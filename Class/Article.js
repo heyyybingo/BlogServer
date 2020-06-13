@@ -5,12 +5,12 @@ const BaseClass = require("./BaseClass")
 
 class article extends BaseClass {
 
-    constructor(id, title, content, authorId, createTime, lastUpdateTime, hidden, favs, enters, tags) {
+    constructor(id, title, content, author, createTime, lastUpdateTime, hidden, favs, enters, tags) {
         super(id);
         this.title = title;
         this.simpleContent = content
         this.content = content;
-        this.authorId = authorId;
+        this.author = author;
         this.createTime = createTime;
         this.lastUpdateTime = lastUpdateTime;
         this.hidden = hidden;
@@ -36,22 +36,22 @@ class article extends BaseClass {
     }
     setContent(content) {
         this.content = content
-        // 设置简易内容
-        // 1.找到最后一个有>标记的
-        // 2.正则取出富文本标签
-        let simpleContent = content.slice(0, 100);
-        // simpleContent = simpleContent.replace(/<[^>]+>/g, "");
-        if (simpleContent == "") {
-            simpleContent = "....";
-        }
-        this.setSimpleContent(simpleContent)
+        // // 设置简易内容
+        // // 1.找到最后一个有>标记的
+        // // 2.正则取出富文本标签
+        // let simpleContent = content.slice(0, 100);
+        // // simpleContent = simpleContent.replace(/<[^>]+>/g, "");
+        // if (simpleContent == "") {
+        //     simpleContent = "....";
+        // }
+        // this.setSimpleContent(simpleContent)
     }
 
-    getAuthorId() {
-        return this.authorId;
+    getAuthor() {
+        return this.author;
     }
-    setAuthorId(authorId) {
-        this.authorId = authorId
+    setAuthor(author) {
+        this.author = author
     }
 
     getCreateTime() {

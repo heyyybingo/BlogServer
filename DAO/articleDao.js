@@ -35,6 +35,12 @@ class articleDao extends BaseDao {
         console.log(arr)
         return this.model.count(arr)
     }
+    findById(obj) {
+        return this.model.findById(obj.getId()).populate('author', 'userName')
+    }
+    findSimpleById(obj) {
+        return this.model.findById(obj.getId(), "title simpleContent favs enters tags lastUpdateTime author").populate('author', 'userName')
+    }
     findByPageAndEveryNum(page, everyNum, obj) {
         // 仅返回包含标题，简易内容，标签，点赞量，浏览量
         // 该函数根据创建的id顺序逆序返回值
@@ -63,9 +69,9 @@ class articleDao extends BaseDao {
         } else {
             arr = {}
         }
-        return this.model.find(arr, "title simpleContent favs enters tags lastUpdateTime").sort({
+        return this.model.find(arr, "title simpleContent favs enters tags lastUpdateTime author").sort({
             _id: -1
-        }).skip(skipNum).limit(limitNum)
+        }).skip(skipNum).limit(limitNum).populate('author', 'userName')
     }
 
     findByIdAndIncFavs(_id) {
