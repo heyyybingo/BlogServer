@@ -35,8 +35,11 @@ class articleDao extends BaseDao {
         console.log(arr)
         return this.model.count(arr)
     }
+    findByAuthor(obj){
+        return this.model.find({author:obj.getAuthor()},"title simpleContent favs enters tags lastUpdateTime author").populate('author', 'userName avatar role')
+    }
     findById(obj) {
-        return this.model.findById(obj.getId()).populate('author', 'userName')
+        return this.model.findById(obj.getId()).populate('author', 'userName avatar role')
     }
     findSimpleById(obj) {
         return this.model.findById(obj.getId(), "title simpleContent favs enters tags lastUpdateTime author").populate('author', 'userName')

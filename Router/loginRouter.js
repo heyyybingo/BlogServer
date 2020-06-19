@@ -124,7 +124,7 @@ loginRouter.post("/account/userReg", (req, res) => {
     let user = new User();
     console.log("session:%", req.session)
     console.log("checkCode:%", req.session.checkCode)
-    if (checkCode != req.session.checkCode) {
+    if (checkCode != req.session.checkCode||email!=req.session.email) {
         res.status(403).send({
             result: "wrong code"
         })
@@ -140,7 +140,9 @@ loginRouter.post("/account/userReg", (req, res) => {
     let udao = new userDao();
     udao.save(user).then(result => {
         console.log('success', result)
-        res.status(200).send();
+        res.status(200).send({
+            state:"success"
+        });
     }).catch(err => {
         console.log('err', err);
         if (err.code == 11000) {
@@ -206,6 +208,7 @@ loginRouter.post("/account/checkMail", (req, res) => {
         }
         console.log("message sent:%", Info.messageId)
         req.session.checkCode = code;
+        req.session.email=email;
         console.log("session:%", req.session)
         console.log("sendCheckcode:%", req.session.checkCode)
         res.status(200).send({

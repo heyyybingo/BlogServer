@@ -2,7 +2,7 @@ const BaseClass = require("./BaseClass")
 
 
 class User extends BaseClass {
-    constructor(id, userName, password, role, state, email, registerTime) {
+    constructor(id, userName, password, role, state, email, registerTime,avatar) {
         super(id);
         this.userName = userName;
         this.password = password;
@@ -10,6 +10,13 @@ class User extends BaseClass {
         this.state = state;
         this.email = email;
         this.registerTime = registerTime;
+        this.avatar=avatar;
+    }
+    getAvatar(){
+        return this.avatar;
+    }
+    setAvatar(avatar){
+        this.avatar=avatar;
     }
     getUserName() {
         return this.userName;

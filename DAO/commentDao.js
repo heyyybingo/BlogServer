@@ -18,17 +18,17 @@ class commentDao extends BaseDao {
             article: {
                 "$ne": null
             }
-        }).populate('article').populate('user', 'userName').populate({
+        }).populate('article').populate('user', 'userName role avatar').populate({
             path: 'replies',
             populate: {
                 path: 'from',
-                select: "userName"
+                select: "userName role avatar"
             }
         }).populate({
             path: 'replies',
             populate: {
                 path: 'to',
-                select: "userName"
+                select: "userName role avatar"
             }
         }).sort({
             _id: -1
@@ -41,17 +41,17 @@ class commentDao extends BaseDao {
             let limitNum = parseInt(everyNum)
             return this.model.find({
                 article
-            }).skip(skipNum).limit(limitNum).populate('user', 'userName').populate({
+            }).skip(skipNum).limit(limitNum).populate('user', 'userName role avatar').populate({
                 path: 'replies',
                 populate: {
                     path: 'from',
-                    select: "userName"
+                    select: "userName role avatar"
                 }
             }).populate({
                 path: 'replies',
                 populate: {
                     path: 'to',
-                    select: "userName"
+                    select: "userName role avatar"
                 }
             })
         } catch (err) {

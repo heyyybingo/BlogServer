@@ -27,17 +27,17 @@ class messageBoardDao extends BaseDao {
                 path: "comments",
                 populate: [{
                         path: "user",
-                        select: 'userName',
+                        select: 'userName role avatar',
                     }, {
 
                         path: "replies",
                         populate: [{
                                 path: "from",
-                                select: "userName"
+                                select: "userName role avatar"
                             },
                             {
                                 path: "to",
-                                select: "userName"
+                                select: "userName role avatar"
                             }
                         ]
                     }

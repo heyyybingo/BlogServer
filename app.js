@@ -12,6 +12,7 @@ const managerRouter = require("./Router/managerRouter");
 const tagsRouter = require("./Router/tagsRouter")
 const comRepRouter = require("./Router/comRepRouter")
 const userRouter = require("./Router/userRouter")
+const uploadRouter = require("./Router/uploadRouter")
 const messageBoardRouter = require("./Router/messageBoardRouter")
 const bodyParser = require('body-parser')
 const session = require('express-session')
@@ -78,12 +79,14 @@ app.post(/^(?!\/account)/, function (req, res, next) {
 
 
 })
+app.use("/public",express.static('public'));
 app.use("/", loginRouter)
 app.use("/article", articleRouter)
 app.use("/manager", managerRouter)
 app.use("/tags", tagsRouter)
 app.use("/comRep", comRepRouter)
 app.use("/user", userRouter)
+app.use("/upload", uploadRouter)
 app.use("/messageBoard", messageBoardRouter)
 
 app.listen(port, () => {

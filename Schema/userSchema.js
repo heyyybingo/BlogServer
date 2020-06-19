@@ -1,6 +1,10 @@
 let Schema = require("./Schema")
 
 let userSchema = new Schema({
+    avatar:{
+        type: String,
+        default:null
+    },
     userName: {
         type: String,
         required: true,

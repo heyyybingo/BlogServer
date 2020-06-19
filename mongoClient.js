@@ -21,7 +21,8 @@ mongoClient.on('error', function (err) {
 /**
  * Mongo 关闭连接回调
  */
-mongoClient.on('disconnected', function () {
+mongoClient.on('disconnected', function (err) {
+   console.log(err)
    console.log('Mongoose disconnected');
    throw 'Mongoose disconnected';
 });

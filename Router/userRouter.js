@@ -2,6 +2,12 @@ var userRouter = require("express").Router()
 const userDao = require("../DAO/userDao")
 const User = require("../Class/User")
 
+userRouter.post("/userInfo",(req,res)=>{
+    res.status(200).send({
+        state:"success",
+        data:req.User
+    })
+})
 // userRouter.get("/getAuthor", (req, res) => {
 //     let authorId = req.query.authorId;
 //     console.log(authorId)
@@ -163,6 +169,8 @@ userRouter.post('/updateUser', (req, res) => {
     let role = req.body.role;
     let state = req.body.state;
 
+    let avatar=req.body.avatar;
+
     let user = new User();
     user.setId(_id)
     user.setUserName(userName);
@@ -170,6 +178,7 @@ userRouter.post('/updateUser', (req, res) => {
     user.setEmail(email);
     user.setRole(role);
     user.setState(state);
+    user.setAvatar(avatar);
     console.log("updateUser-user:", user)
     let udao = new userDao();
     udao.findByIdAndUpdate(user).then(result => {

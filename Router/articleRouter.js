@@ -3,6 +3,27 @@ const Article = require("../Class/Article")
 const articleDao = require("../DAO/articleDao")
 
 /**
+ * 查询用户文章
+ */
+
+ articleRouter.post("/users",(req,res)=>{
+     let id=req.User._id;
+        console.log("id",id);
+     let article = new Article();
+     article.setAuthor(id);
+     let adao = new articleDao();
+     adao.findByAuthor(article).then(result=>{
+         res.status(200).send({
+             state:"success",
+             data:result
+         })
+     }).catch(err=>{
+         console.log(err);
+         res.status(500).send();
+     })
+
+ })
+/**
  * 查询文章总数
  */
 articleRouter.get("/queryCount", (req, res) => {
@@ -34,7 +55,7 @@ articleRouter.get("/queryCount", (req, res) => {
 articleRouter.get("/queryList", (req, res) => {
     let page = req.query.page
     let everyNum = req.query.everyNum;
-
+    console.log(page,everyNum);
     let title = req.query.title;
     let simpleContent = req.query.simpleContent;
     let tags = req.query.tags;
