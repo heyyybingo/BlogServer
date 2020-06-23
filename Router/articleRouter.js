@@ -185,6 +185,7 @@ articleRouter.post("/create", (req, res) => {
 articleRouter.post("/update", (req, res) => {
     let articleId = req.body._id;
     let title = req.body.title;
+    let simpleContent = req.body.simpleContent;
     let content = req.body.content;
     let lastUpdateTime = Date.now();
     let tags = req.body.tags;
@@ -193,6 +194,7 @@ articleRouter.post("/update", (req, res) => {
     let article = new Article();
     article.setId(articleId);
     article.setTitle(title);
+    article.setSimpleContent(simpleContent)
     article.setContent(content);
     article.setLastUpdateTime(lastUpdateTime);
     article.setTags(tags);
