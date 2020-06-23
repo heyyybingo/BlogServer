@@ -97,7 +97,29 @@ messageBoardRouter.get("/allBoards", (req, res) => {
         res.status(500).send()
     })
 })
-
+messageBoardRouter.get("/queryCountById", (req, res) => {
+    let boardId = req.query.boardId;
+    let msboard = new MessageBoard();
+    msboard.setBoardId(boardId);
+    let mdao = new messageBoardDao()
+    mdao.findCommentCountById(msboard).then(result => {
+        console.log(result)
+        if (!result[0]) {
+            throw 1;
+        }
+        res.status(200).send({
+            state: "success",
+            data: result[0]
+        })
+    }).catch(err => {
+        console.log(err)
+        if (err == 1) {
+            res.status(404).send();
+            return;
+        }
+        res.status(500).send()
+    })
+})
 messageBoardRouter.get("/queryById", (req, res) => {
     let boardId = req.query.boardId;
     let page = req.query.page;
@@ -156,5 +178,43 @@ messageBoardRouter.post("/addComments", (req, res) => {
     })
 })
 
+messageBoardRouter.post("/removeComments", (req, res) => {
+    let boardId = req.body.boardId;
+    let commentId = req.body.commentId;
 
+
+    let msboard = new MessageBoard()
+    let comment = new Comment();
+    let mdao = new messageBoardDao()
+    let cdao = new commentDao();
+    msboard.setBoardId(boardId);
+    comment.setId(commentId);
+    console.log("request", boardId, commentId)
+    // 先移除板块内的id，再移除实体信息
+
+    mdao.findByBoardIdAndPull(msboard, comment.getId()).then(result => {
+        console.log("findByBoardIdAndPull", result);
+        if (!result) {
+            throw 1
+        }
+        return cdao.findByIdAndRemove(comment);
+    }).then(result => {
+        console.log(result);
+        if (!result) {
+            throw 1
+        }
+        res.status(200).send({
+            state: "success"
+        })
+    }).catch(err => {
+        console.log(err)
+        if (err == 1) {
+            res.status(404).send();
+            return;
+        }
+        res.status(500).send()
+    })
+
+
+})
 module.exports = messageBoardRouter

@@ -47,8 +47,12 @@ class BaseDao {
                 delete obj[key]
             }
         }
+        console.log(obj)
         return this.model.findByIdAndUpdate(obj.getId(), {
-            $set: obj
+            $set: obj,
+
+        }, {
+            'new': true
         })
     }
     findByIdAndRemove(obj) {

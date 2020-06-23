@@ -6,23 +6,23 @@ const articleDao = require("../DAO/articleDao")
  * 查询用户文章
  */
 
- articleRouter.post("/users",(req,res)=>{
-     let id=req.User._id;
-        console.log("id",id);
-     let article = new Article();
-     article.setAuthor(id);
-     let adao = new articleDao();
-     adao.findByAuthor(article).then(result=>{
-         res.status(200).send({
-             state:"success",
-             data:result
-         })
-     }).catch(err=>{
-         console.log(err);
-         res.status(500).send();
-     })
+articleRouter.post("/users", (req, res) => {
+    let id = req.User._id;
+    console.log("id", id);
+    let article = new Article();
+    article.setAuthor(id);
+    let adao = new articleDao();
+    adao.findByAuthor(article).then(result => {
+        res.status(200).send({
+            state: "success",
+            data: result
+        })
+    }).catch(err => {
+        console.log(err);
+        res.status(500).send();
+    })
 
- })
+})
 /**
  * 查询文章总数
  */
@@ -55,7 +55,7 @@ articleRouter.get("/queryCount", (req, res) => {
 articleRouter.get("/queryList", (req, res) => {
     let page = req.query.page
     let everyNum = req.query.everyNum;
-    console.log(page,everyNum);
+    console.log(page, everyNum);
     let title = req.query.title;
     let simpleContent = req.query.simpleContent;
     let tags = req.query.tags;
@@ -196,7 +196,7 @@ articleRouter.post("/update", (req, res) => {
     article.setContent(content);
     article.setLastUpdateTime(lastUpdateTime);
     article.setTags(tags);
-    console.log(article)
+    console.log("update-article-before", article)
     // 创建dao对象进行删除操作
     let adao = new articleDao();
     adao.findByIdAndUpdate(article).then(result => {
@@ -204,6 +204,7 @@ articleRouter.post("/update", (req, res) => {
         if (result == null) {
             throw "notFound"
         }
+        console.log("update-article-after", result)
         res.status(200).send({
             state: "success",
             data: result._id

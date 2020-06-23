@@ -168,13 +168,25 @@ comRepRouter.post("/addReply", (req, res) => {
     })
 })
 comRepRouter.post("/removeReply", (req, res) => {
+    let commentId = req.body.commentId;
     let replyId = req.body.replyId;
     let reply = new Reply();
-
+    let comment = new Comment();
+    comment.setId(commentId);
     reply.setId(replyId);
 
     let rdao = new replyDao();
+    let cdao = new commentDao();
     rdao.findByIdAndRemove(reply).then(result => {
+        console.log(result)
+        if (!result) {
+            throw 1
+        }
+
+        return cdao.findByIdAndPullReply(comment, reply.getId())
+
+    }).then(result => {
+
         console.log(result)
         if (!result) {
             throw 1

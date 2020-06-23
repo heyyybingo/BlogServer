@@ -15,6 +15,30 @@ class messageBoardDao extends BaseDao {
             boardId: 1
         })
     }
+    findCommentCountById(obj) {
+        try {
+            let find = {
+                boardId: obj.getBoardId()
+            }
+            return this.model.aggregate([{
+                $match: find
+            }, {
+
+                $project: {
+
+                    count: {
+
+                        $size: "$comments"
+
+                    }
+
+                }
+
+            }])
+        } catch (err) {
+            throw err;
+        }
+    }
     findByboardId(obj, page, everyNum) {
         try {
             let skipNum = page > 1 ? (page - 1) * everyNum : 0
@@ -25,6 +49,7 @@ class messageBoardDao extends BaseDao {
             }
             return this.model.findOne(find).populate({
                 path: "comments",
+
                 populate: [{
                         path: "user",
                         select: 'userName role avatar',
@@ -39,14 +64,23 @@ class messageBoardDao extends BaseDao {
                                 path: "to",
                                 select: "userName role avatar"
                             }
-                        ]
+                        ],
+                        options: {
+                            sort: {
+                                _id: -1
+                            }
+                        }
                     }
 
                 ],
 
                 options: {
+                    sort: {
+                        _id: -1
+                    },
                     skip: skipNum,
-                    limit: limitNum
+                    limit: limitNum,
+
                 }
             })
             // }).populate({
@@ -83,6 +117,20 @@ class messageBoardDao extends BaseDao {
             }
             return this.model.findOneAndUpdate(find, {
                 $push: {
+                    'comments': comment
+                }
+            })
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    findByBoardIdAndPull(obj, comment) {
+        try {
+            let find = {
+                boardId: obj.getBoardId()
+            }
+            return this.model.findOneAndUpdate(find, {
+                $pull: {
                     'comments': comment
                 }
             })

@@ -18,6 +18,8 @@ class commentDao extends BaseDao {
             article: {
                 "$ne": null
             }
+        }).sort({
+            _id: -1
         }).populate('article').populate('user', 'userName role avatar').populate({
             path: 'replies',
             populate: {
@@ -41,19 +43,31 @@ class commentDao extends BaseDao {
             let limitNum = parseInt(everyNum)
             return this.model.find({
                 article
-            }).skip(skipNum).limit(limitNum).populate('user', 'userName role avatar').populate({
-                path: 'replies',
-                populate: {
-                    path: 'from',
-                    select: "userName role avatar"
+            }).sort({
+                _id: -1
+            }).skip(skipNum).limit(limitNum).populate([{
+                    path: "user",
+                    select: 'userName role avatar',
+                }, {
+
+                    path: "replies",
+                    populate: [{
+                            path: "from",
+                            select: "userName role avatar"
+                        },
+                        {
+                            path: "to",
+                            select: "userName role avatar"
+                        }
+                    ],
+                    options: {
+                        sort: {
+                            _id: -1
+                        }
+                    }
                 }
-            }).populate({
-                path: 'replies',
-                populate: {
-                    path: 'to',
-                    select: "userName role avatar"
-                }
-            })
+
+            ])
         } catch (err) {
             throw err
         }
@@ -62,6 +76,13 @@ class commentDao extends BaseDao {
     findByIdAndPushReply(obj, reply) {
         return this.model.findByIdAndUpdate(obj.getId(), {
             $push: {
+                'replies': reply
+            }
+        })
+    }
+    findByIdAndPullReply(obj, reply) {
+        return this.model.findByIdAndUpdate(obj.getId(), {
+            $pull: {
                 'replies': reply
             }
         })

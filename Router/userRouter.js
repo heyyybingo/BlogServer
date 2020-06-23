@@ -1,11 +1,13 @@
 var userRouter = require("express").Router()
 const userDao = require("../DAO/userDao")
 const User = require("../Class/User")
-
-userRouter.post("/userInfo",(req,res)=>{
+const jwt = require('jsonwebtoken');
+const tokenConfig = require("../tokenConfig");
+const fs = require("fs")
+userRouter.post("/userInfo", (req, res) => {
     res.status(200).send({
-        state:"success",
-        data:req.User
+        state: "success",
+        data: req.User
     })
 })
 // userRouter.get("/getAuthor", (req, res) => {
@@ -163,13 +165,14 @@ userRouter.post('/addManager', (req, res) => {
 
 userRouter.post('/updateUser', (req, res) => {
     let _id = req.body._id
+    let oldavatar = req.body.oldavatar;
     let userName = req.body.userName;
     let password = req.body.password;
     let email = req.body.email;
     let role = req.body.role;
     let state = req.body.state;
 
-    let avatar=req.body.avatar;
+    let avatar = req.body.avatar;
 
     let user = new User();
     user.setId(_id)
@@ -184,9 +187,19 @@ userRouter.post('/updateUser', (req, res) => {
     udao.findByIdAndUpdate(user).then(result => {
         console.log("updateUser-result:", result);
         if (result) {
+            console.log("OLDAVATAR", oldavatar)
+            if (oldavatar) {
+                try {
+                    fs.unlinkSync(oldavatar);
+                } catch (err) {
+                    console.log(err)
+                }
+            }
+            let token = jwt.sign(result.toJSON(), tokenConfig.key, tokenConfig.options)
+            // console.log("refreshedToken", token)
             res.status(200).send({
                 state: "success",
-
+                data: token
             })
         } else {
             throw 1;
@@ -220,6 +233,14 @@ userRouter.post('/removeUser', (req, res) => {
     let udao = new userDao();
     udao.findByIdAndRemove(user).then(result => {
         if (result) {
+            let avatar = result.avatar;
+            if (avatar) {
+                try {
+                    fs.unlinkSync(avatar);
+                } catch (err) {
+                    console.log(err)
+                }
+            }
             res.status(200).send({
                 state: "success"
             })

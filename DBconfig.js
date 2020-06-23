@@ -5,7 +5,8 @@ let config = {
 }
 let options = {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }
 let DBuri = "mongodb://" + config.url + ":" + config.port + "/" + config.database
 
